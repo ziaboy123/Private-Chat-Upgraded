@@ -100,6 +100,16 @@ body {
   color: #f1f1f1;
 }
 
+/* --- Responsive Design --- */
+@media (max-width: 480px) {
+  .content {
+    padding: 10px;
+  }
+  .message-box {
+    height: 95vh;
+  }
+}
+
 .create-btn:hover {
   background-color: #f1f1f1;
   color: #111;
