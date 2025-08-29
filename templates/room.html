@@ -19,22 +19,28 @@
     <body>
         <div class="content">
         
-<div class="message-box">
-  <h2>Chat Room: {{code}}</h2>
-  <div class="messages" id="messages"></div>
-  <div class="typing-indicator" id="typing-indicator"></div>
-  <div class="inputs">
-    <input
-      type="text"
-      rows="3"
-      placeholder="Message"
-      name="message"
-      id="message"
-    />
-    <button type="button" name="send" id="send-btn">
-      Send
-    </button>
-  </div>
+<div class="chat-container">
+    <div class="message-box">
+        <h2>Chat Room: {{code}}</h2>
+        <div class="messages" id="messages"></div>
+        <div class="typing-indicator" id="typing-indicator"></div>
+        <div class="inputs">
+            <input
+            type="text"
+            rows="3"
+            placeholder="Message"
+            name="message"
+            id="message"
+            />
+            <button type="button" name="send" id="send-btn">
+            Send
+            </button>
+        </div>
+    </div>
+    <div class="user-list-panel">
+        <h3>Users Online</h3>
+        <ul id="user-list"></ul>
+    </div>
 </div>
 <script type="text/javascript">
   var socketio = io();
@@ -42,6 +48,7 @@
   const messages = document.getElementById("messages");
   const typingIndicator = document.getElementById("typing-indicator");
   const messageInput = document.getElementById("message");
+  const userList = document.getElementById("user-list");
   let typingUsers = new Set();
 
   const updateTypingIndicator = () => {
@@ -70,6 +77,15 @@
   socketio.on("user_stop_typing", (data) => {
     typingUsers.delete(data.name);
     updateTypingIndicator();
+  });
+
+  socketio.on("update_user_list", (data) => {
+    userList.innerHTML = ""; // Clear the list
+    data.users.sort().forEach(user => {
+      const li = document.createElement("li");
+      li.textContent = user;
+      userList.appendChild(li);
+    });
   });
   
   const createStatusMessage = (msg) => {
