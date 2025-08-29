@@ -116,6 +116,11 @@ def connect():
         return
 
     join_room(room)
+    # Add user to the set of users in the room and broadcast the new list
+    redis_client.sadd(f"room:{room}:users", name)
+    users = [user.decode('utf-8') for user in redis_client.smembers(f"room:{room}:users")]
+    emit("update_user_list", {"users": users}, to=room)
+
     status_msg = {"type": "status", "msg": f"{name} has entered the room"}
     emit("status", {"msg": f"{name} has entered the room"}, to=room)
     
@@ -135,6 +140,11 @@ def disconnect():
         return
 
     if redis_client.exists(f"room:{room}"):
+        # Remove user from the set and broadcast the new list
+        redis_client.srem(f"room:{room}:users", name)
+        users = [user.decode('utf-8') for user in redis_client.smembers(f"room:{room}:users")]
+        emit("update_user_list", {"users": users}, to=room)
+
         status_msg = {"type": "status", "msg": f"{name} has left the room"}
         emit("status", {"msg": f"{name} has left the room"}, to=room)
         redis_client.rpush(f"room:{room}:messages", json.dumps(status_msg))
@@ -143,7 +153,7 @@ def disconnect():
         # Decrement members and delete room if it's empty
         new_member_count = redis_client.hincrby(f"room:{room}", "members", -1)
         if new_member_count <= 0:
-            redis_client.delete(f"room:{room}", f"room:{room}:messages")
+            redis_client.delete(f"room:{room}", f"room:{room}:messages", f"room:{room}:users")
             print(f"Room {room} deleted.")
 
     print(f"{name} has left the room {room}")
