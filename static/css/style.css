@@ -100,16 +100,6 @@ body {
   color: #f1f1f1;
 }
 
-/* --- Responsive Design --- */
-@media (max-width: 480px) {
-  .content {
-    padding: 10px;
-  }
-  .message-box {
-    height: 95vh;
-  }
-}
-
 .create-btn:hover {
   background-color: #f1f1f1;
   color: #111;
@@ -130,15 +120,22 @@ body {
 }
 
 /* --- Chat Room Styles --- */
+.chat-container {
+  display: flex;
+  gap: 20px;
+  width: 90vw;
+  height: 90vh;
+  max-width: 1200px;
+}
+
 .message-box {
   background-color: #1c1c1c;
   border-radius: 10px;
-  height: 90vh;
   display: flex;
   flex-direction: column;
-  width: 90vw;
-  max-width: 1000px;
   border: 1px solid #333;
+  flex-grow: 1;
+  min-width: 0; /* Prevents flexbox overflow issues */
 }
 
 .messages {
@@ -225,6 +222,33 @@ body {
   font-size: 14px;
 }
 
+.user-list-panel {
+  background-color: #1c1c1c;
+  border: 1px solid #333;
+  border-radius: 10px;
+  width: 200px;
+  flex-shrink: 0;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-list-panel h3 {
+  font-weight: 500;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #333;
+  margin-bottom: 10px;
+  color: #aaa;
+}
+
+.user-list-panel ul {
+  list-style: none;
+  overflow-y: auto;
+}
+.user-list-panel li {
+  padding: 5px 0;
+}
+
 /* --- About Page & Button Styles --- */
 .about-btn {
   display: block;
@@ -298,4 +322,23 @@ body {
 .back-btn:hover {
   background-color: transparent;
   color: #f1f1f1;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+  .user-list-panel {
+    display: none;
+  }
+  .chat-container {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .content {
+    padding: 10px;
+  }
+  .message-box {
+    height: 95vh;
+  }
 }
