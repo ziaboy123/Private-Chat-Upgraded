@@ -1,0 +1,47 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>The Rooms</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+        <link
+        rel="stylesheet"
+        href="{{url_for('static', filename='css/style.css')}}"
+        />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+            integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <body>
+        <div class="content">
+
+<form method="post" class="buttons">
+    <h1>The Rooms</h1>
+    <div>
+        <label>Name:</label>
+        <input
+            type="text"
+            placeholder="Pick a name!"
+            name="name"
+            value="{{name}}"
+        />
+    </div>
+    <div class="join">
+        <input type="text" placeholder="Room Code" name="code" value="{{code}}"/>
+        <button type="submit" name="join">Join a room</button>
+    </div>
+    <button type="submit" name="create" class="create-btn">Create a room</button>
+    <a href="{{ url_for('about') }}" class="about-btn">What is this?</a>
+    {% if error %}
+    <ul>
+        <li>{{error}}</li>
+    </ul>
+    {% endif %}
+</form>
+
+</div>
+    </body>
+</html>
